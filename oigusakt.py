@@ -3,7 +3,15 @@
 import xml.etree.ElementTree as ElementTree
 from cached_property import cached_property
 
+def cached_element_text(func):
+    @cached_property
+    def find(context):
+        return context.findChild(func.__name__).text
+    return find
+
+
 class BaseElement():
+
     _ns={'ts':'tyviseadus_1_10.02.2010'}
     def __init__(self,element):
         self._element=element
@@ -14,30 +22,6 @@ class BaseElement():
     def attrib(self,name):
         return self._element.attrib.get(name)
 
-class Metaandmed(BaseElement):
-    @cached_property
-    def valjaandja(self):
-        return self.findChild('valjaandja').text
-
-    @cached_property
-    def dokumentLiik(self):
-        return self.findChild('dokumentLiik').text
-
-    @cached_property
-    def tekstiLiik(self):
-        return self.findChild('tekstiliik').text
-
-    @cached_property
-    def lyhend(self):
-        return self.findChild('lyhend').text
-
-    @cached_property
-    def dokumentEtapp(self):
-        return self.findChild('dokumentEtapp').text
-
-    @cached_property
-    def dokumentStaatus(self):
-        return self.findChild('dokumentStaatus').text
 
 class Oigusakt(BaseElement):
     def __init__(self,xml):
@@ -51,3 +35,41 @@ class Oigusakt(BaseElement):
     def metaandmed(self):
         return Metaandmed(self.findChild('metaandmed'))
 
+
+class Metaandmed(BaseElement):
+    @cached_element_text
+    def valjaandja(self):
+        pass
+
+    @cached_element_text
+    def dokumentLiik(self):
+        pass
+
+    @cached_element_text
+    def tekstiliik(self):
+        pass
+
+    @cached_element_text
+    def lyhend(self):
+        pass
+
+    @cached_element_text
+    def dokumentEtapp(self):
+        pass
+
+    @cached_element_text
+    def dokumentStaatus(self):
+        pass
+
+    @cached_property
+    def vastuvoetud(self):
+        return Vastuvoetud(self.findChild('vastuvoetud'))
+
+class Vastuvoetud(BaseElement):
+    @cached_element_text
+    def aktikuupaev(self):
+        pass
+
+    @cached_element_text
+    def joustumine(self):
+        pass

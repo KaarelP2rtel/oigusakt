@@ -19,12 +19,23 @@ class TestOigusakt(unittest.TestCase):
         self.assertIsInstance(self.akt.metaandmed,Metaandmed)
 
     def test_oigusakt_metandmed_has_fields(self):
-        self.assertEqual('Riigikogu',self.akt.metaandmed.valjaandja)
-        self.assertEqual('seadus',self.akt.metaandmed.dokumentLiik)
-        self.assertEqual('terviktekst',self.akt.metaandmed.tekstiLiik)
-        self.assertEqual('RelvS',self.akt.metaandmed.lyhend)
-        self.assertEqual('avaldamine',self.akt.metaandmed.dokumentEtapp)
-        self.assertEqual('avaldatud',self.akt.metaandmed.dokumentStaatus)
+        meta = self.akt.metaandmed
+        self.assertEqual('Riigikogu',meta.valjaandja)
+        self.assertEqual('seadus',meta.dokumentLiik)
+        self.assertEqual('terviktekst',meta.tekstiliik)
+        self.assertEqual('RelvS',meta.lyhend)
+        self.assertEqual('avaldamine',meta.dokumentEtapp)
+        self.assertEqual('avaldatud',meta.dokumentStaatus)
+
+    def test_metaandmed_has_vastuvoetud(self):
+        self.assertIsInstance(self.akt.metaandmed.vastuvoetud,Vastuvoetud)
+
+    def test_vastuvoetud_has_fields(self):
+        vastuvoetud= self.akt.metaandmed.vastuvoetud
+        self.assertEqual('2001-06-13',vastuvoetud.aktikuupaev)
+        self.assertEqual('2002-03-31',vastuvoetud.joustumine)
+
+
 
 
 if __name__ == '__main__':
