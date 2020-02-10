@@ -5,9 +5,15 @@ from cached_property import cached_property
 
 def cached_element_text(func):
     @cached_property
-    def find(context):
+    def findChildText(context):
         return context.findChild(func.__name__).text
-    return find
+    return findChildText
+
+def cached_element_attribute(func):
+    @cached_property
+    def findAttribute(context):
+        return context._element.attrib.get(func.__name__)
+    return findAttribute
 
 
 class BaseElement():
@@ -19,17 +25,18 @@ class BaseElement():
     def findChild(self,name):
         return self._element.find('ts:{}'.format(name),namespaces=self._ns)
 
+
     def attrib(self,name):
-        return self._element.attrib.get(name)
+        return self
 
 
 class Oigusakt(BaseElement):
     def __init__(self,xml):
         self._element=ElementTree.parse(xml).getroot()
 
-    @cached_property
+    @cached_element_attribute
     def id(self):
-        return self.attrib('id')
+        pass
 
     @cached_property
     def metaandmed(self):
