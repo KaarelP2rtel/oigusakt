@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<oigusakt id="7bd95b30-0712-4479-b382-c53a8038faf5" xsi:schemaLocation="tyviseadus_1_10.02.2010 http://xmlr.eesti.ee/xml/schemas/oigusakt/tyviseadus_1_10.02.2010.xsd" xmlns="tyviseadus_1_10.02.2010" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<sisu>
+		<peatykk id="ptk1">
+			<peatykkNr>1</peatykkNr>
+			<kuvatavNr><![CDATA[1. peatükk]]></kuvatavNr>
+			<peatykkPealkiri>ÜLDSÄTTED</peatykkPealkiri>
+			<paragrahv id="para2">
+				<paragrahvNr>2</paragrahvNr>
+				<kuvatavNr><![CDATA[§ 2.]]></kuvatavNr>
+				<paragrahvPealkiri>Seaduse kohaldamisala</paragrahvPealkiri>
+				<loige id="para2lg2">
+					<loigeNr>2</loigeNr>
+					<kuvatavNr><![CDATA[(2)]]></kuvatavNr>
+					<sisuTekst>
+						<tavatekst>Tekst<sup>SUPTEKST</sup>Tekst2<i>ITEKST</i>Tekst3<p>PTEKST</p>Tekst4<b>BTEKST</b>Tekst5Tekst<sup>SUPTEKST</sup>Tekst2<i>ITEKST</i>Tekst3<p>PTEKST</p>Tekst4<b>BTEKST</b>Tekst5</tavatekst>
+					</sisuTekst>
+				</loige>
+			</paragrahv>
+		</peatykk>
+	</sisu>
+</oigusakt>

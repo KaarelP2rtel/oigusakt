@@ -7,8 +7,23 @@ from pydoc import locate
 def cached_element_text(func):
     @cached_property
     def findChildText(context):
-        return context.findChild(func.__name__).text
+        element=context.findChild(func.__name__)
+        return element.text if element is not None else None
     return findChildText
+
+def cached_element_text_with_html_tags(func):
+    @cached_property
+    def findChildTextWithHtml(context):
+        element=context.findChild(func.__name__)
+        if element is not None:
+            text=element.text
+            for child in element:
+                tag = BaseElement(child).tag
+                text+=f'<{tag}>{child.text}</{tag}>{child.tail}'
+            return text
+        return None
+    return findChildTextWithHtml
+
 
 def cached_element_attribute(func):
     @cached_property
@@ -19,7 +34,8 @@ def cached_element_attribute(func):
 def cached_element(func):
     @cached_property
     def findElement(context):
-        return eval(func.__name__.capitalize())(context.findChild(func.__name__))
+        element = context.findChild(func.__name__)
+        return eval(func.__name__.capitalize())(element) if element is not None else None
     return findElement
 
 
@@ -30,14 +46,19 @@ class BaseElement():
         self._element=element
 
     def findChild(self,name):
-        return self._element.find('ts:{}'.format(name),namespaces=self._ns)
+        return self._element.find(f'ts:{name}',namespaces=self._ns)
 
     def findChildren(self,name):
-        return self._element.findall('ts:{}'.format(name),namespaces=self._ns)
+        return self._element.findall(f'ts:{name}',namespaces=self._ns)
 
 
     def attrib(self,name):
         return self
+
+    @cached_property
+    def tag(self):
+        ns = f'{{{self._ns.get("ts")}}}'
+        return self._element.tag.replace(ns,'')
 
 class Oigusakt(BaseElement):
     def __init__(self,xml):
@@ -185,7 +206,7 @@ class Muutmismarge(BaseElement):
     def joustumine(self):
         pass
 
-    @cached_element_text
+    @cached_element_text_with_html_tags
     def tavatekst(self):
         pass
 
@@ -212,6 +233,28 @@ class Peatykk(BaseElement):
     @cached_property
     def paragrahvid(self):
         return tuple(Paragrahv(i) for i in self.findChildren('paragrahv'))
+    @cached_property
+    def jaod(self):
+        return tuple(Jagu(i) for i in self.findChildren('jagu'))
+
+class Jagu(BaseElement):
+    @cached_element_attribute
+    def id(self):
+        pass
+    @cached_element_text
+    def jaguNr(self):
+        pass
+    @cached_element_text
+    def kuvatavNr(self):
+        pass
+    @cached_element_text
+    def jaguPealkiri(self):
+        pass
+    @cached_property
+    def paragrahvid(self):
+        return tuple(Paragrahv(i) for i in self.findChildren('paragrahv'))
+
+
 
 class Paragrahv(BaseElement):
     @cached_element_attribute
@@ -222,6 +265,9 @@ class Paragrahv(BaseElement):
         pass
     @cached_element_text
     def paragrahvPealkiri(self):
+        pass
+    @cached_element
+    def sisuTekst(self):
         pass
     @cached_element
     def muutmismarge(self):
@@ -258,7 +304,7 @@ class Loige(BaseElement):
         return tuple(Alampunkt(i) for i in self.findChildren('alampunkt'))
 class Sisutekst(BaseElement):
 
-    @cached_element_text
+    @cached_element_text_with_html_tags
     def tavatekst(self):
         pass
 

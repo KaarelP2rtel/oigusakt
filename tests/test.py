@@ -87,6 +87,16 @@ class TestOigusakt(unittest.TestCase):
     def test_paragrahv_has_loiked(self):
         self.assertEqual(5,len(self.akt.sisu.peatykid[0].paragrahvid[0].loiked))
 
+    def test_tavatekst_may_have_html_sup_tags(self):
+        text_with_html="Käesoleva seaduse 8. ja 8<sup>1</sup>. peatükki ei kohaldata teises riigis laskekõlbmatuks muudetud tulirelvale, mis on toodud Eestisse eesmärgiga seda siin püsivalt vallata."
+        tavatekst=self.akt.sisu.peatykid[0].paragrahvid[2].loiked[1].sisuTekst.tavatekst
+        self.assertEqual(text_with_html,tavatekst)
+
+    def test_tavatekst_may_have_html_tags(self):
+        text_with_shitloads_of_html='Tekst<sup>SUPTEKST</sup>Tekst2<i>ITEKST</i>Tekst3<p>PTEKST</p>Tekst4<b>BTEKST</b>Tekst5Tekst<sup>SUPTEKST</sup>Tekst2<i>ITEKST</i>Tekst3<p>PTEKST</p>Tekst4<b>BTEKST</b>Tekst5'
+        with open('tests/htmltags.xml','r') as htmlxml:
+            tavatekst=Oigusakt(htmlxml).sisu.peatykid[0].paragrahvid[0].loiked[0].sisuTekst.tavatekst
+        self.assertEqual(text_with_shitloads_of_html,tavatekst)
 
 
 if __name__ == '__main__':
