@@ -97,6 +97,16 @@ class TestOigusakt(unittest.TestCase):
         with open('tests/htmltags.xml','r') as htmlxml:
             tavatekst=Oigusakt(htmlxml).sisu.peatykid[0].paragrahvid[0].loiked[0].sisuTekst.tavatekst
         self.assertEqual(text_with_shitloads_of_html,tavatekst)
+    def test_tavatekst_may_have_self_closing_html_tags(self):
+        text_with_self_closing_tag='Tekst<br></br>Tekst'
+        with open('tests/reavahetus.xml','r') as htmlxml:
+            tavatekst=Oigusakt(htmlxml).sisu.peatykid[0].paragrahvid[0].loiked[0].sisuTekst.tavatekst
+        self.assertEqual(text_with_self_closing_tag,tavatekst)
+    def test_tavatekst_may_have_retarded_html_tags(self):
+        text_with_reavahetus_tag='Tekst–<br></br>Tekst'
+        with open('tests/reavahetus.xml','r') as htmlxml:
+            tavatekst=Oigusakt(htmlxml).sisu.peatykid[0].paragrahvid[0].loiked[1].sisuTekst.tavatekst
+        self.assertEqual(text_with_reavahetus_tag,tavatekst)
 
 
 if __name__ == '__main__':

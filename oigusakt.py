@@ -19,7 +19,7 @@ def cached_element_text_with_html_tags(func):
             text=element.text
             for child in element:
                 tag = BaseElement(child).tag
-                text+=f'<{tag}>{child.text}</{tag}>{child.tail}'
+                text+=f'<{tag}>{child.text if child.text else ""}</{tag}>{child.tail}'
             return text
         return None
     return findChildTextWithHtml
@@ -62,7 +62,9 @@ class BaseElement():
 
 class Oigusakt(BaseElement):
     def __init__(self,xml):
-        self._element=ElementTree.parse(xml).getroot()
+        # Stupid problems call for stupid solutions
+        xmlstring=xml.read().replace('reavahetus','br')
+        self._element=ElementTree.fromstring(xmlstring)
 
     @cached_element_attribute
     def id(self):

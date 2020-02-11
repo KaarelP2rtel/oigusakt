@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<oigusakt id="7bd95b30-0712-4479-b382-c53a8038faf5" xsi:schemaLocation="tyviseadus_1_10.02.2010 http://xmlr.eesti.ee/xml/schemas/oigusakt/tyviseadus_1_10.02.2010.xsd" xmlns="tyviseadus_1_10.02.2010" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<sisu>
+		<peatykk id="ptk17">
+			<peatykkNr ylaIndeks="1">13</peatykkNr>
+			<kuvatavNr><![CDATA[13<sup>1</sup>. peatükk]]></kuvatavNr>
+			<peatykkPealkiri>VASTUTUS</peatykkPealkiri>
+			<paragrahv id="para89b1">
+				<paragrahvNr ylaIndeks="1">89</paragrahvNr>
+				<kuvatavNr><![CDATA[§ 89<sup>1</sup>.]]></kuvatavNr>
+				<paragrahvPealkiri>Relva, tulirelva olulise osa või laskemoona käitlemise nõuete ning nende arvestuse ja registreerimise korra või nõuetele mittevastava laskekõlbmatu relva käitlemise nõuete rikkumine</paragrahvPealkiri>
+				<muutmismarge>
+					<avaldamismarge>
+						<RTosa>RT I</RTosa>
+						<avaldamineKuupaev>2015-03-04</avaldamineKuupaev>
+						<RTartikkel>5</RTartikkel>
+						<aktViide>104032015005</aktViide>
+					</avaldamismarge>
+					<joustumine>2015-04-01</joustumine>
+				</muutmismarge>
+				<loige id="para89b1lg1">
+					<loigeNr>1</loigeNr>
+					<kuvatavNr><![CDATA[(1)]]></kuvatavNr>
+					<sisuTekst>
+						<tavatekst>Tekst<br/>Tekst</tavatekst>
+					</sisuTekst>
+					<muutmismarge>
+						<avaldamismarge>
+							<RTosa>RT I</RTosa>
+							<avaldamineKuupaev>2015-03-04</avaldamineKuupaev>
+							<RTartikkel>5</RTartikkel>
+							<aktViide>104032015005</aktViide>
+						</avaldamismarge>
+						<joustumine>2015-04-01</joustumine>
+					</muutmismarge>
+				</loige>
+				<loige id="para89b1lg2">
+					<loigeNr>2</loigeNr>
+					<kuvatavNr><![CDATA[(2)]]></kuvatavNr>
+					<sisuTekst>
+						<tavatekst>Tekst–<reavahetus/>Tekst</tavatekst>
+					</sisuTekst>
+					<muutmismarge>
+						<avaldamismarge>
+							<RTosa>RT I</RTosa>
+							<RTaasta>2010</RTaasta>
+							<RTnr>22</RTnr>
+							<RTartikkel>108</RTartikkel>
+							<aktViide>13310847</aktViide>
+						</avaldamismarge>
+						<joustumine>2011-01-01</joustumine>
+					</muutmismarge>
+				</loige>
+			</paragrahv>
+		</peatykk>
+	</sisu>
+</oigusakt>
