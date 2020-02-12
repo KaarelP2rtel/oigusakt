@@ -2,7 +2,7 @@
 
 import xml.etree.ElementTree as ElementTree
 from cached_property import cached_property
-from pydoc import locate
+
 
 def cached_element_text(func):
     @cached_property
