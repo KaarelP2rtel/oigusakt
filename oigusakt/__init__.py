@@ -1,1 +1,1 @@
-import oigusakt
+from .oigusakt import *
