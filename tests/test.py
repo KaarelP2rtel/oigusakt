@@ -7,7 +7,7 @@ class TestOigusakt(unittest.TestCase):
     def setUp(self):
         testxml='tests/relvaseadus.xml'
         with open(testxml,'r') as xml:
-            self.akt = Oigusakt(xml=xml)
+            self.akt = Seadus(xml=xml.read())
 
 
     def test_oigusakt_has_id(self):
@@ -95,18 +95,22 @@ class TestOigusakt(unittest.TestCase):
     def test_tavatekst_may_have_html_tags(self):
         text_with_shitloads_of_html='Tekst<sup>SUPTEKST</sup>Tekst2<i>ITEKST</i>Tekst3<p>PTEKST</p>Tekst4<b>BTEKST</b>Tekst5Tekst<sup>SUPTEKST</sup>Tekst2<i>ITEKST</i>Tekst3<p>PTEKST</p>Tekst4<b>BTEKST</b>Tekst5'
         with open('tests/htmltags.xml','r') as htmlxml:
-            tavatekst=Oigusakt(htmlxml).sisu.peatykid[0].paragrahvid[0].loiked[0].sisuTekst.tavatekst
+            tavatekst=Seadus(htmlxml.read()).sisu.peatykid[0].paragrahvid[0].loiked[0].sisuTekst.tavatekst
         self.assertEqual(text_with_shitloads_of_html,tavatekst)
     def test_tavatekst_may_have_self_closing_html_tags(self):
         text_with_self_closing_tag='Tekst<br></br>Tekst'
         with open('tests/reavahetus.xml','r') as htmlxml:
-            tavatekst=Oigusakt(htmlxml).sisu.peatykid[0].paragrahvid[0].loiked[0].sisuTekst.tavatekst
+            tavatekst=Seadus(htmlxml.read()).sisu.peatykid[0].paragrahvid[0].loiked[0].sisuTekst.tavatekst
         self.assertEqual(text_with_self_closing_tag,tavatekst)
     def test_tavatekst_may_have_retarded_html_tags(self):
         text_with_reavahetus_tag='Tekst–<br></br>Tekst'
         with open('tests/reavahetus.xml','r') as htmlxml:
-            tavatekst=Oigusakt(htmlxml).sisu.peatykid[0].paragrahvid[0].loiked[1].sisuTekst.tavatekst
+            tavatekst=Seadus(htmlxml.read()).sisu.peatykid[0].paragrahvid[0].loiked[1].sisuTekst.tavatekst
         self.assertEqual(text_with_reavahetus_tag,tavatekst)
+    def test_akt_may_have_different_namespaces(self):
+        with open('tests/maarus.xml','r') as maarus:
+            valjaandja = Oigusakt(maarus.read()).metaandmed.valjaandja
+            self.assertEqual('Siseminister',valjaandja)
 
 
 if __name__ == '__main__':

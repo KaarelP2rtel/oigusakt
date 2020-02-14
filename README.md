@@ -3,5 +3,5 @@ This is a Python module that parses [Riigiteataja](https://www.riigiteataja.ee/i
 
 # Installing
 `
-pip3 install https://github.com/KaarelP2rtel/oigusakt/releases/download/1.0.4/oigusakt_kaarelp2rtel-1.0.4-py3-none-any.whl
+pip3 install https://github.com/KaarelP2rtel/oigusakt/releases/download/1.1.0/oigusakt_kaarelp2rtel-1.1.0-py3-none-any.whl
 `
