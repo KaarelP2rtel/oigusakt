@@ -284,19 +284,10 @@ class Jagu(BaseElement):
     @element_list(Paragrahv)
     def paragrahvid(self):pass
 
-def nextId():
-    i=1
-    while True:
-        yield i 
-        i+=1
-
 class Peatykk(BaseElement):
-    # Because in some RT XML files peatyk does not have an ID
-    # and some have duplicate IDs
-    _id = nextId()
-    @property
-    def id(self):
-        return self._id
+
+    @attribute
+    def id(self):pass
 
     @text
     def peatykkNr(self):pass

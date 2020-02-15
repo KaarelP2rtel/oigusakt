@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="oigusakt-kaarelp2rtel", # Replace with your own username
-    version="1.2.0",
+    version="1.2.1",
     author="Kaarel Pärtel",
     author_email="kaarelp2rtel@gmail.com",
     description="XML Mapper for Riigiteataja legal acts",
