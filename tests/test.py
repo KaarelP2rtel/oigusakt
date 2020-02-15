@@ -89,29 +89,38 @@ class TestOigusakt(unittest.TestCase):
 
     def test_tavatekst_may_have_html_sup_tags(self):
         text_with_html="Käesoleva seaduse 8. ja 8<sup>1</sup>. peatükki ei kohaldata teises riigis laskekõlbmatuks muudetud tulirelvale, mis on toodud Eestisse eesmärgiga seda siin püsivalt vallata."
-        tavatekst=self.akt.sisu.peatykid[0].paragrahvid[2].loiked[1].sisuTekst.tavatekst
+        tavatekst=self.akt.sisu.peatykid[0].paragrahvid[2].loiked[1].sisuTekst.valmistekst
         self.assertEqual(text_with_html,tavatekst)
 
     def test_tavatekst_may_have_html_tags(self):
         text_with_shitloads_of_html='Tekst<sup>SUPTEKST</sup>Tekst2<i>ITEKST</i>Tekst3<p>PTEKST</p>Tekst4<b>BTEKST</b>Tekst5Tekst<sup>SUPTEKST</sup>Tekst2<i>ITEKST</i>Tekst3<p>PTEKST</p>Tekst4<b>BTEKST</b>Tekst5'
         with open('tests/htmltags.xml','r') as htmlxml:
-            tavatekst=Seadus(htmlxml.read()).sisu.peatykid[0].paragrahvid[0].loiked[0].sisuTekst.tavatekst
+            tavatekst=Seadus(htmlxml.read()).sisu.peatykid[0].paragrahvid[0].loiked[0].sisuTekst.valmistekst
         self.assertEqual(text_with_shitloads_of_html,tavatekst)
     def test_tavatekst_may_have_self_closing_html_tags(self):
         text_with_self_closing_tag='Tekst<br></br>Tekst'
         with open('tests/reavahetus.xml','r') as htmlxml:
-            tavatekst=Seadus(htmlxml.read()).sisu.peatykid[0].paragrahvid[0].loiked[0].sisuTekst.tavatekst
+            tavatekst=Seadus(htmlxml.read()).sisu.peatykid[0].paragrahvid[0].loiked[0].sisuTekst.valmistekst
         self.assertEqual(text_with_self_closing_tag,tavatekst)
     def test_tavatekst_may_have_retarded_html_tags(self):
         text_with_reavahetus_tag='Tekst–<br></br>Tekst'
         with open('tests/reavahetus.xml','r') as htmlxml:
-            tavatekst=Seadus(htmlxml.read()).sisu.peatykid[0].paragrahvid[0].loiked[1].sisuTekst.tavatekst
+            tavatekst=Seadus(htmlxml.read()).sisu.peatykid[0].paragrahvid[0].loiked[1].sisuTekst.valmistekst
         self.assertEqual(text_with_reavahetus_tag,tavatekst)
     def test_akt_may_have_different_namespaces(self):
         with open('tests/maarus.xml','r') as maarus:
             valjaandja = Oigusakt(maarus.read()).metaandmed.valjaandja
             self.assertEqual('Siseminister',valjaandja)
-
+    def test_dangling_paragraphs_are_added_to_last_list(self):
+        with open('tests/pere.xml', 'r') as pere:
+            osad=Seadus(pere.read()).sisu.osad
+        self.assertEqual(12,len(osad[3].paragrahvid))
+    def test_sisutekst_tavatekst_is_added_together(self):
+        
+        expected="esitatavate andmete loetelu kehtestab valdkonna eest vastutav minister määrusega."
+        with open('tests/pere.xml', 'r') as pere:
+            tavatekst=Seadus(pere.read()).sisu.osad[1].peatykid[5].paragrahvid[11].loiked[2].sisuTekst.valmistekst
+        self.assertIn(expected,tavatekst)
 
 if __name__ == '__main__':
     unittest.main()
