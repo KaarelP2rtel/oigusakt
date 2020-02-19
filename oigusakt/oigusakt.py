@@ -369,6 +369,23 @@ class Osa(BaseElement):
 
     @element_list(Paragrahv)
     def paragrahvid(self):pass
+class Allkirjastaja(BaseElement):
+    @text
+    def ametinimetus(self):pass
+
+    @text
+    def eesnimi(self):pass
+
+    @text
+    def perekonnanimi(self):pass
+
+class Allkiri(BaseElement):
+    @text
+    def allkiriKoht(self):pass
+
+    @element(Allkirjastaja)
+    def allkirjastaja(self):pass
+
 
 class SeaduseSisu(BaseElement):
     @element(Preambul)
@@ -380,9 +397,16 @@ class SeaduseSisu(BaseElement):
     @element_list(Osa)
     def osad(self):pass
 
+
 class MaaruseSisu(BaseElement):
     @element_list(Paragrahv)
     def paragrahvid(self):pass
+
+    @element(Preambul)
+    def preambul(self):pass
+
+    
+
 
 class Seadus(Oigusakt):
 
@@ -395,3 +419,10 @@ class Seadus(Oigusakt):
 class Maarus(Oigusakt):
     @element(MaaruseSisu)
     def sisu(self):pass
+
+    @element_list(Muutmismarge)
+    def muutmismarkmed(self):pass
+
+    @element_list(Allkiri)
+    def allkirjad(self):pass
+
