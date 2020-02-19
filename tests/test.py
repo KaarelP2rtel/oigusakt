@@ -32,10 +32,10 @@ class TestOigusakt(unittest.TestCase):
     def test_metaandmed_has_avaldamismarge(self):
         self.assertIsInstance(self.akt.metaandmed.avaldamismarge,Avaldamismarge)
 
-    def test_vastuvoetud_has_fields(self):
+    def test_vastuvoetud_has_formated_dates(self):
         vastuvoetud= self.akt.metaandmed.vastuvoetud
-        self.assertEqual('2001-06-13',vastuvoetud.aktikuupaev)
-        self.assertEqual('2002-03-31',vastuvoetud.joustumine)
+        self.assertEqual('13.06.2001',vastuvoetud.aktikuupaev)
+        self.assertEqual('31.03.2002',vastuvoetud.joustumine)
 
     def test_vastuvoetud_has_avaldamismarge(self):
         self.assertIsInstance(self.akt.metaandmed.vastuvoetud.avaldamismarge,Avaldamismarge)
@@ -54,13 +54,13 @@ class TestOigusakt(unittest.TestCase):
         self.assertEqual('2019',am.RTaasta)
         self.assertEqual('80',am.RTartikkel)
         self.assertEqual('119032019080',am.aktViide)
-        self.assertEqual('2019-03-19+02:00',am.avaldamineKuupaev)
+        self.assertEqual('19.03.2019',am.avaldamineKuupaev)
     def test_meta_has_kehtivus(self):
         self.assertIsInstance(self.akt.metaandmed.kehtivus,Kehtivus)
 
     def test_meta_kehtivus_has_fields(self):
         kehtivus = self.akt.metaandmed.kehtivus
-        self.assertEqual('2020-01-01',kehtivus.kehtivuseAlgus)
+        self.assertEqual('01.01.2020',kehtivus.kehtivuseAlgus)
 
     #At this point I decided to skip writing the same test with different names.
 
@@ -121,6 +121,10 @@ class TestOigusakt(unittest.TestCase):
         with open('tests/pere.xml', 'r') as pere:
             tavatekst=Seadus(pere.read()).sisu.osad[1].peatykid[5].paragrahvid[11].loiked[2].sisuTekst.valmistekst
         self.assertIn(expected,tavatekst)
+    def test_muutmismarge_has_valmismarge(self):
+        expected = "[RT I, 29.06.2018, 3 - jõust. 01.07.2018, lõike 2 redaktsiooni kohaldatakse alates 2021. aasta 1. jaanuarist.]"
+        valmismarge= self.akt.sisu.peatykid[2].paragrahvid[1].loiked[7].muutmismarge.valmismarge
 
+        self.assertEqual(expected,valmismarge)
 if __name__ == '__main__':
     unittest.main()

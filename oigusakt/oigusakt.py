@@ -4,10 +4,26 @@ import xml.etree.ElementTree as ElementTree
 from cached_property import cached_property
 from .xmlmapper import *
 
-
+def valmistekst(func):
+    @cached_property
+    def parseText(context):
+        text=''
+        for i in context._element:
+            child=BaseElement(i)
+            if child.tag=='tavatekst':
+                text+=child._element.text
+                for h in child._element:
+                    html=BaseElement(h)
+                    if html.tag in ['b','i','sup','sub','br','p']:
+                        element=html._element
+                        text+=f'<{html.tag}>{element.text if element.text else ""}</{html.tag}>{element.tail}'
+            elif child.tag=='viide':
+                text+=child.findChild('kuvatavTekst').text
+        return text
+    return parseText
 
 class Kehtivus(BaseElement):
-    @text
+    @date
     def kehtivuseAlgus(self):pass
 
 
@@ -29,30 +45,72 @@ class Avaldamismarge(BaseElement):
     @text
     def aktViide(self):pass
 
-    @text
+    @date
     def avaldamineKuupaev(self):pass
+
 class Vastuvoetud(BaseElement):
-    @text
+
+
+    @date
     def aktikuupaev(self):pass
 
-    @text
+    @date
     def joustumine(self):pass
 
     @element(Avaldamismarge)
     def avaldamismarge(self):pass
 
 class Muutmismarge(BaseElement):
-    @text
+    @date
     def aktikuupaev(self):pass
 
     @element(Avaldamismarge)
     def avaldamismarge(self):pass
 
-    @text
+    @date
     def joustumine(self):pass
 
     @text_with_html_tags
     def tavatekst(self):pass
+
+    @valmistekst
+    def valmistekst(self):pass
+
+    @property
+    def valmismarge(self):
+        text='['
+        for i in self._element:
+            child=BaseElement(i)
+            if child.tag=='tavatekst':
+                text+=child._element.text
+                for h in child._element:
+                    html=BaseElement(h)
+                    if html.tag in ['b','i','sup','sub','br','p']:
+                        element=html._element
+                        text+=f'<{html.tag}>{element.text if element.text else ""}</{html.tag}>{element.tail}'
+            elif child.tag=='viide':
+                text+=child.findChild('kuvatavTekst').text
+            elif child.tag=='joustumine':
+                text += ' - jõust. '
+                date=parser.parse(child._element.text.split('+')[0])
+                text+= date.strftime('%d.%m.%Y')
+
+            elif child.tag=='avaldamismarge':
+                marge=Avaldamismarge(child._element)
+                if marge.RTosa:
+                    text+=f'{marge.RTosa}, '
+                if marge.RTaasta:
+                    text+=f'{marge.RTaasta}, '
+                elif marge.avaldamineKuupaev:
+                    text+=f'{marge.avaldamineKuupaev}, '
+                if marge.RTnr:
+                    text+= f'{marge.RTnr}, '
+                text += marge.RTartikkel
+
+
+        return text+']'
+
+
 
 
 class Normtehnmarkus(BaseElement):
@@ -78,38 +136,13 @@ class Aktinimi(BaseElement):
     def nimi(self):pass
 
 class Sisutekst(BaseElement):
-    @cached_property
-    def valmistekst(self):
-        text=''
-        for i in self._element:
-            child=BaseElement(i)
-            if child.tag=='tavatekst':
-                text+=child._element.text
-                for h in child._element:
-                    html=BaseElement(h)
-                    if html.tag in ['b','i','sup','sub','br','p']: 
-                        element=html._element
-                        text+=f'<{html.tag}>{element.text if element.text else ""}</{html.tag}>{element.tail}'
-            elif child.tag=='viide':
-                text+=child.findChild('kuvatavTekst').text
-        return text
+    @valmistekst
+    def valmistekst(self):pass
 
 class Preambul(BaseElement):
-    @cached_property
+    @valmistekst
     def valmistekst(self):
-        text=''
-        for i in self._element:
-            child=BaseElement(i)
-            if child.tag=='tavatekst':
-                text+=child._element.text
-                for h in child._element:
-                    html=BaseElement(h)
-                    if html.tag in ['b','i','sup','sub','br','p']: 
-                        element=html._element
-                        text+=f'<{html.tag}>{element.text if element.text else ""}</{html.tag}>{element.tail}'
-            elif child.tag=='viide':
-                text+=child.findChild('kuvatavTekst').text
-        return text
+        pass
 
 class Alampunkt(BaseElement):
 
@@ -121,9 +154,12 @@ class Alampunkt(BaseElement):
 
     @text
     def kuvatavNr(self):pass
-    
+
     @element(Sisutekst)
     def sisuTekst(self):pass
+
+    @element(Muutmismarge)
+    def muutmismarge(self):pass
 
 class Loige(BaseElement):
 
@@ -146,7 +182,7 @@ class Loige(BaseElement):
     def alampunktid(self):pass
 
 class Metaandmed(BaseElement):
-    
+
     @text
     def valjaandja(self):pass
 
@@ -234,7 +270,7 @@ class Alljaotis(BaseElement):
 
     @text
     def alljaotisNr(self):pass
-    
+
     @text
     def alljaotisPealkiri(self):pass
 
@@ -244,6 +280,8 @@ class Alljaotis(BaseElement):
     @element_list(Paragrahv)
     def paragrahvid(self):pass
 
+    @element(Muutmismarge)
+    def muutmismarge(self):pass
 
 class Jaotis(BaseElement):
     @attribute
@@ -263,6 +301,9 @@ class Jaotis(BaseElement):
 
     @element_list(Alljaotis)
     def alljaotised(self):pass
+
+    @element(Muutmismarge)
+    def muutmismarge(self):pass
 
 
 class Jagu(BaseElement):
@@ -284,6 +325,10 @@ class Jagu(BaseElement):
     @element_list(Paragrahv)
     def paragrahvid(self):pass
 
+    @element(Muutmismarge)
+    def muutmismarge(self):pass
+
+
 class Peatykk(BaseElement):
 
     @attribute
@@ -304,6 +349,8 @@ class Peatykk(BaseElement):
     @element_list(Jagu)
     def jaod(self):pass
 
+    @element(Muutmismarge)
+    def muutmismarge(self):pass
 class Osa(BaseElement):
     @attribute
     def id(self):pass
@@ -322,11 +369,11 @@ class Osa(BaseElement):
 
     @element_list(Paragrahv)
     def paragrahvid(self):pass
-    
+
 class SeaduseSisu(BaseElement):
     @element(Preambul)
     def preambul(self):pass
-    
+
     @element_list(Peatykk)
     def peatykid(self):pass
 
@@ -338,7 +385,7 @@ class MaaruseSisu(BaseElement):
     def paragrahvid(self):pass
 
 class Seadus(Oigusakt):
-         
+
     @element_list(Muutmismarge)
     def muutmismarkmed(self):pass
 

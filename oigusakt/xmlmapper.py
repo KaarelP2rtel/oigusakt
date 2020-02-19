@@ -1,5 +1,6 @@
 from cached_property import cached_property
 import xml.etree.ElementTree as ElementTree
+from dateutil import parser
 
 def attribute(func):
     @cached_property
@@ -12,6 +13,16 @@ def text(func):
     def findChildText(context):
         element=context.findChild(func.__name__)
         return element.text if element is not None else None
+    return findChildText
+
+def date(func):
+    @cached_property
+    def findChildText(context):
+        element=context.findChild(func.__name__)
+        if element is not None:
+            date=parser.parse(element.text.split('+')[0])
+            return date.strftime('%d.%m.%Y')
+        else: return None
     return findChildText
 
 
@@ -68,7 +79,7 @@ class BaseElement:
     def attrib(self,name):
         return self
 
-    @property
+    @cached_property
     def tag(self):
         return self._tag
 
